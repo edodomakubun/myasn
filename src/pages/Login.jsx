@@ -78,21 +78,24 @@ const Login = () => {
 
           <div className="d-grid gap-3">
             <Button
-              variant="light"
+              variant="white"
               size="lg"
-              className="d-flex align-items-center justify-content-center border shadow-sm py-3 position-relative"
+              className="d-flex align-items-center border shadow-sm p-1 ps-1 pe-4 rounded-pill position-relative overflow-hidden"
               onClick={signInWithGoogle}
-              style={{ transition: 'all 0.2s' }}
-              onMouseOver={(e) => e.currentTarget.classList.add('shadow')}
-              onMouseOut={(e) => e.currentTarget.classList.remove('shadow')}
+              style={{ transition: 'all 0.3s ease', backgroundColor: '#fff' }}
+              onMouseOver={(e) => { e.currentTarget.classList.add('shadow'); e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseOut={(e) => { e.currentTarget.classList.remove('shadow'); e.currentTarget.style.transform = 'translateY(0)'; }}
             >
-              <img
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Google"
-                className="position-absolute start-0 ms-3"
-                style={{ width: '24px', height: '24px' }}
-              />
-              <span className="fw-semibold text-secondary">Masuk dengan Akun Belajar.id / Google</span>
+              <div className="bg-light rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '48px', height: '48px' }}>
+                <img
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                  alt="Google"
+                  style={{ width: '24px', height: '24px' }}
+                />
+              </div>
+              <span className="fw-semibold text-dark flex-grow-1 text-center" style={{ letterSpacing: '0.5px' }}>
+                Masuk dengan Akun Belajar.id
+              </span>
             </Button>
           </div>
 

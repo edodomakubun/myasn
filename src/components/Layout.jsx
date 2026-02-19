@@ -16,9 +16,9 @@ const Layout = () => {
   const handleShow = () => setShowSidebar(true);
 
   const SidebarContent = () => (
-    <div className="d-flex flex-column h-100 p-3">
-      <h4 className="mb-4 text-center fw-bold d-none d-lg-block">MYASN Guru</h4>
-      <Nav className="flex-column flex-grow-1 gap-1 mt-2 mt-lg-0">
+    <div className="d-flex flex-column h-100 p-3 sidebar-gradient">
+      <h4 className="mb-4 text-center fw-bold d-none d-lg-block text-white">MYASN Guru</h4>
+      <Nav className="flex-column flex-grow-1 gap-2 mt-2 mt-lg-0">
         <Link to="/" className={linkClass('/')} onClick={handleClose}>
             <User size={18} className="me-2" /> Profil
           </Link>
@@ -72,17 +72,14 @@ const Layout = () => {
   );
 
   return (
-    <div className="d-flex" style={{ height: '100vh', overflow: 'hidden' }}>
+    <div className="d-flex" style={{ height: '100vh', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
       {/* Desktop Sidebar (Hidden on Mobile) */}
-      <div className="bg-dark text-white d-none d-lg-flex flex-column" style={{ width: '280px', flexShrink: 0 }}>
+      <div className="d-none d-lg-flex flex-column" style={{ width: '280px', flexShrink: 0 }}>
         <SidebarContent />
       </div>
 
       {/* Mobile Offcanvas Sidebar */}
-      <Offcanvas show={showSidebar} onHide={handleClose} className="bg-dark text-white d-lg-none" style={{ width: '280px' }}>
-        <Offcanvas.Header closeButton closeVariant="white" className="border-bottom border-secondary">
-             <Offcanvas.Title className="fw-bold">Menu</Offcanvas.Title>
-        </Offcanvas.Header>
+      <Offcanvas show={showSidebar} onHide={handleClose} className="d-lg-none p-0 border-0" style={{ width: '280px' }}>
         <Offcanvas.Body className="p-0">
           <SidebarContent />
         </Offcanvas.Body>
