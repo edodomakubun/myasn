@@ -15,6 +15,7 @@ const Certification = () => {
   // Edit/Add Modal State
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [isLifetime, setIsLifetime] = useState(false);
   const [formData, setFormData] = useState({
     type: '',
     cert_number: '',
@@ -78,6 +79,11 @@ const Certification = () => {
       ...formData
     };
 
+    // Fix: Handle empty date string for PostgreSQL
+    if (isLifetime || payload.valid_until === '') {
+      payload.valid_until = null;
+    }
+
     try {
       if (editingId) {
         const { error } = await supabase.from('certification').update(payload).eq('id', editingId);
@@ -98,6 +104,7 @@ const Certification = () => {
         back_title: '',
         cert_url: ''
       });
+      setIsLifetime(false);
       setEditingId(null);
       fetchSettingsAndData();
     } catch (err) {
@@ -107,6 +114,7 @@ const Certification = () => {
 
   const handleEdit = (item) => {
     setEditingId(item.id);
+    setIsLifetime(!item.valid_until);
     setFormData({
       type: item.type,
       cert_number: item.cert_number,
@@ -142,7 +150,7 @@ const Certification = () => {
         <div>
           {!canEdit && <Badge bg="danger" className="me-2 p-2">Edit Ditutup</Badge>}
           {canEdit && <Badge bg="success" className="me-2 p-2">Edit Dibuka</Badge>}
-          <Button disabled={!canEdit} onClick={() => { setEditingId(null); setFormData({}); setShowModal(true); }}>
+          <Button disabled={!canEdit} onClick={() => { setEditingId(null); setFormData({}); setIsLifetime(false); setShowModal(true); }}>
             <Plus size={18} className="me-1" /> Tambah
           </Button>
         </div>
@@ -235,8 +243,27 @@ const Certification = () => {
                     <Form.Control type="date" name="cert_date" value={formData.cert_date || ''} onChange={handleInputChange} required />
                 </div>
                 <div className="col-md-6 mb-3">
-                    <Form.Label>Masa Berlaku Sampai (Kosongkan jika seumur hidup)</Form.Label>
-                    <Form.Control type="date" name="valid_until" value={formData.valid_until || ''} onChange={handleInputChange} />
+                    <Form.Label>Masa Berlaku Sampai</Form.Label>
+                    <Form.Check
+                      type="checkbox"
+                      id="lifetime-checkbox"
+                      label="Seumur Hidup"
+                      className="mb-2"
+                      checked={isLifetime}
+                      onChange={(e) => {
+                        setIsLifetime(e.target.checked);
+                        if (e.target.checked) {
+                          setFormData(prev => ({ ...prev, valid_until: '' }));
+                        }
+                      }}
+                    />
+                    <Form.Control
+                      type="date"
+                      name="valid_until"
+                      value={formData.valid_until || ''}
+                      onChange={handleInputChange}
+                      disabled={isLifetime}
+                    />
                 </div>
             </div>
 
