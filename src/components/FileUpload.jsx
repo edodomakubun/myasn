@@ -49,6 +49,22 @@ const FileUpload = ({
         .from(bucketName)
         .getPublicUrl(data.path);
 
+      // Attempt to delete the old file if it exists
+      if (currentUrl) {
+        try {
+          // Extract the path from the URL.
+          // URL format: .../storage/v1/object/public/<bucketName>/<path>
+          const urlParts = currentUrl.split(`/public/${bucketName}/`);
+          if (urlParts.length > 1) {
+            const oldPath = decodeURIComponent(urlParts[1]);
+            await supabase.storage.from(bucketName).remove([oldPath]);
+          }
+        } catch (delError) {
+          console.error("Failed to delete old file:", delError);
+          // Do not fail the upload process if deletion fails
+        }
+      }
+
       onUpload(publicUrl);
     } catch (err) {
       console.error(err);

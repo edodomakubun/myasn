@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }) => {
     isAdmin: profile?.role === 'admin',
     signInWithGoogle,
     signOut,
+    refreshProfile: () => session && fetchProfile(session.user.id),
   };
 
   return (

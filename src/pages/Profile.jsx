@@ -5,7 +5,7 @@ import { Form, Button, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
 import FileUpload from '../components/FileUpload';
 
 const Profile = () => {
-  const { session, profile } = useAuth();
+  const { session, profile, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState(profile || {});
   const [settings, setSettings] = useState({});
@@ -63,6 +63,7 @@ const Profile = () => {
       setError(error.message);
     } else {
       setSuccess('Profil berhasil diperbarui.');
+      if (refreshProfile) refreshProfile(); // Refresh global profile state
     }
   };
 
