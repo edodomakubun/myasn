@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import { Table, Button, Modal, Form, Alert, Spinner, Badge } from 'react-bootstrap';
 import FileUpload from '../components/FileUpload';
-import { Edit, Trash2, Plus, FileText } from 'lucide-react';
+import { Edit, Trash2, Plus, FileText, Eye } from 'lucide-react';
+import CertificationDetailModal from '../components/CertificationDetailModal';
 
 const Certification = () => {
   const { session, profile } = useAuth();
   const [dataList, setDataList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [canEdit, setCanEdit] = useState(false);
+
+  // Edit/Add Modal State
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
@@ -18,15 +21,18 @@ const Certification = () => {
     cert_date: '',
     valid_until: '',
     institution: '',
+    front_title: '',
+    back_title: '',
     cert_url: ''
   });
+
+  // Detail Modal State
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchSettingsAndData();
-  }, [session]);
-
-  const fetchSettingsAndData = async () => {
+  const fetchSettingsAndData = useCallback(async () => {
     setLoading(true);
     // Check setting
     const { data: settings } = await supabase
@@ -48,7 +54,11 @@ const Certification = () => {
     else setDataList(data);
 
     setLoading(false);
-  };
+  }, [session, profile]);
+
+  useEffect(() => {
+    fetchSettingsAndData();
+  }, [fetchSettingsAndData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -84,6 +94,8 @@ const Certification = () => {
         cert_date: '',
         valid_until: '',
         institution: '',
+        front_title: '',
+        back_title: '',
         cert_url: ''
       });
       setEditingId(null);
@@ -101,6 +113,8 @@ const Certification = () => {
       cert_date: item.cert_date,
       valid_until: item.valid_until || '',
       institution: item.institution || '',
+      front_title: item.front_title || '',
+      back_title: item.back_title || '',
       cert_url: item.cert_url || ''
     });
     setShowModal(true);
@@ -112,6 +126,11 @@ const Certification = () => {
     const { error } = await supabase.from('certification').delete().eq('id', id);
     if (error) setError(error.message);
     else fetchSettingsAndData();
+  };
+
+  const handleShowDetail = (item) => {
+    setSelectedItem(item);
+    setShowDetailModal(true);
   };
 
   if (loading) return <Spinner animation="border" />;
@@ -146,23 +165,28 @@ const Certification = () => {
         <tbody>
           {dataList.map((item) => (
             <tr key={item.id}>
-              <td>{item.type}</td>
+              <td>
+                  <Button variant="link" className="p-0 text-decoration-none fw-bold" onClick={() => handleShowDetail(item)}>
+                      {item.type}
+                  </Button>
+              </td>
               <td>{item.cert_number}</td>
               <td>{item.cert_date}</td>
               <td>{item.valid_until || 'Seumur Hidup'}</td>
               <td>{item.institution}</td>
               <td>
                 {item.cert_url ? (
-                  <a href={item.cert_url} target="_blank" rel="noopener noreferrer">
-                    <FileText size={18} /> Lihat File
-                  </a>
-                ) : '-'}
+                  <span className="text-success"><FileText size={16} /> Ada</span>
+                ) : <span className="text-muted">-</span>}
               </td>
               <td>
-                <Button variant="outline-primary" size="sm" className="me-2" onClick={() => handleEdit(item)} disabled={!canEdit}>
+                <Button variant="info" size="sm" className="me-2 text-white" onClick={() => handleShowDetail(item)} title="Lihat Detail">
+                  <Eye size={16} />
+                </Button>
+                <Button variant="outline-primary" size="sm" className="me-2" onClick={() => handleEdit(item)} disabled={!canEdit} title="Edit">
                   <Edit size={16} />
                 </Button>
-                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item.id)} disabled={!canEdit}>
+                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item.id)} disabled={!canEdit} title="Hapus">
                   <Trash2 size={16} />
                 </Button>
               </td>
@@ -176,6 +200,7 @@ const Certification = () => {
         </tbody>
       </Table>
 
+      {/* Add/Edit Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} backdrop="static" size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{editingId ? 'Edit Sertifikasi' : 'Tambah Sertifikasi'}</Modal.Title>
@@ -215,6 +240,17 @@ const Certification = () => {
                 </div>
             </div>
 
+            <div className="row">
+                <div className="col-md-6 mb-3">
+                    <Form.Label>Gelar Depan (Opsional)</Form.Label>
+                    <Form.Control type="text" name="front_title" value={formData.front_title || ''} onChange={handleInputChange} placeholder="Contoh: Dr." />
+                </div>
+                <div className="col-md-6 mb-3">
+                    <Form.Label>Gelar Belakang (Opsional)</Form.Label>
+                    <Form.Control type="text" name="back_title" value={formData.back_title || ''} onChange={handleInputChange} placeholder="Contoh: S.Pd, M.Pd" />
+                </div>
+            </div>
+
             <Form.Group className="mb-3">
               <Form.Label>Upload Sertifikat (PDF/JPG, Max 2MB)</Form.Label>
               <FileUpload
@@ -231,6 +267,13 @@ const Certification = () => {
           </Modal.Footer>
         </Form>
       </Modal>
+
+      {/* Detail Modal */}
+      <CertificationDetailModal
+        show={showDetailModal}
+        onHide={() => setShowDetailModal(false)}
+        data={selectedItem}
+      />
     </div>
   );
 };

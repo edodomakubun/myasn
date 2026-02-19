@@ -119,6 +119,8 @@ create table public.certification (
   cert_number text,
   cert_date date,
   valid_until date,
+  front_title text,
+  back_title text,
   institution text,
   cert_url text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null

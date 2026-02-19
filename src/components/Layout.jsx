@@ -15,73 +15,17 @@ const Layout = () => {
   const handleClose = () => setShowSidebar(false);
   const handleShow = () => setShowSidebar(true);
 
-  const SidebarContent = () => (
-    <div className="d-flex flex-column h-100 p-3 sidebar-gradient">
-      <h4 className="mb-4 text-center fw-bold d-none d-lg-block text-white">MYASN Guru</h4>
-      <Nav className="flex-column flex-grow-1 gap-2 mt-2 mt-lg-0">
-        <Link to="/" className={linkClass('/')} onClick={handleClose}>
-            <User size={18} className="me-2" /> Profil
-          </Link>
-          <Link to="/education" className={linkClass('/education')} onClick={handleClose}>
-            <BookOpen size={18} className="me-2" /> Riwayat Pendidikan
-          </Link>
-          <Link to="/rank" className={linkClass('/rank')} onClick={handleClose}>
-            <Briefcase size={18} className="me-2" /> Riwayat Pangkat
-          </Link>
-          <Link to="/salary" className={linkClass('/salary')} onClick={handleClose}>
-            <DollarSign size={18} className="me-2" /> Berkala Gaji
-          </Link>
-          <Link to="/certification" className={linkClass('/certification')} onClick={handleClose}>
-            <Award size={18} className="me-2" /> Riwayat Sertifikasi
-          </Link>
-          <Link to="/family" className={linkClass('/family')} onClick={handleClose}>
-            <Users size={18} className="me-2" /> Data Keluarga
-          </Link>
-          <Link to="/documents" className={linkClass('/documents')} onClick={handleClose}>
-            <FileText size={18} className="me-2" /> Dokumen Lain
-          </Link>
-
-          {profile?.role === 'admin' && (
-            <>
-              <hr className="my-3 text-white-50" />
-              <div className="small text-white-50 mb-2 px-3">ADMIN AREA</div>
-              <Link to="/admin/settings" className={linkClass('/admin/settings')} onClick={handleClose}>
-                <Settings size={18} className="me-2" /> Pengaturan
-              </Link>
-              <Link to="/admin/users" className={linkClass('/admin/users')} onClick={handleClose}>
-                <Users size={18} className="me-2" /> Kelola Guru
-              </Link>
-            </>
-          )}
-        </Nav>
-        <div className="mt-auto border-top border-secondary pt-3">
-          <div className="d-flex align-items-center mb-3 px-2">
-            <div className="bg-secondary rounded-circle p-2 me-2 d-flex align-items-center justify-content-center" style={{width: 40, height: 40}}>
-              <User size={20} />
-            </div>
-            <div style={{overflow: 'hidden'}}>
-              <div className="fw-bold text-truncate">{profile?.name || 'User'}</div>
-              <div className="small text-white-50 text-truncate" style={{fontSize: '0.75rem'}}>{profile?.nip || 'No NIP'}</div>
-            </div>
-          </div>
-          <button onClick={signOut} className="btn btn-outline-danger w-100 btn-sm">
-            <LogOut size={16} className="me-2" /> Logout
-          </button>
-        </div>
-    </div>
-  );
-
   return (
     <div className="d-flex" style={{ height: '100vh', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
       {/* Desktop Sidebar (Hidden on Mobile) */}
       <div className="d-none d-lg-flex flex-column" style={{ width: '280px', flexShrink: 0 }}>
-        <SidebarContent />
+        <SidebarContent linkClass={linkClass} handleClose={handleClose} profile={profile} signOut={signOut} />
       </div>
 
       {/* Mobile Offcanvas Sidebar */}
       <Offcanvas show={showSidebar} onHide={handleClose} className="d-lg-none p-0 border-0" style={{ width: '280px' }}>
         <Offcanvas.Body className="p-0">
-          <SidebarContent />
+          <SidebarContent linkClass={linkClass} handleClose={handleClose} profile={profile} signOut={signOut} />
         </Offcanvas.Body>
       </Offcanvas>
 
@@ -105,5 +49,61 @@ const Layout = () => {
     </div>
   );
 };
+
+const SidebarContent = ({ linkClass, handleClose, profile, signOut }) => (
+  <div className="d-flex flex-column h-100 p-3 sidebar-gradient">
+    <h4 className="mb-4 text-center fw-bold d-none d-lg-block text-white">MYASN Guru</h4>
+    <Nav className="flex-column flex-grow-1 gap-2 mt-2 mt-lg-0">
+      <Link to="/" className={linkClass('/')} onClick={handleClose}>
+          <User size={18} className="me-2" /> Profil
+        </Link>
+        <Link to="/education" className={linkClass('/education')} onClick={handleClose}>
+          <BookOpen size={18} className="me-2" /> Riwayat Pendidikan
+        </Link>
+        <Link to="/rank" className={linkClass('/rank')} onClick={handleClose}>
+          <Briefcase size={18} className="me-2" /> Riwayat Pangkat
+        </Link>
+        <Link to="/salary" className={linkClass('/salary')} onClick={handleClose}>
+          <DollarSign size={18} className="me-2" /> Berkala Gaji
+        </Link>
+        <Link to="/certification" className={linkClass('/certification')} onClick={handleClose}>
+          <Award size={18} className="me-2" /> Riwayat Sertifikasi
+        </Link>
+        <Link to="/family" className={linkClass('/family')} onClick={handleClose}>
+          <Users size={18} className="me-2" /> Data Keluarga
+        </Link>
+        <Link to="/documents" className={linkClass('/documents')} onClick={handleClose}>
+          <FileText size={18} className="me-2" /> Dokumen Lain
+        </Link>
+
+        {profile?.role === 'admin' && (
+          <>
+            <hr className="my-3 text-white-50" />
+            <div className="small text-white-50 mb-2 px-3">ADMIN AREA</div>
+            <Link to="/admin/settings" className={linkClass('/admin/settings')} onClick={handleClose}>
+              <Settings size={18} className="me-2" /> Pengaturan
+            </Link>
+            <Link to="/admin/users" className={linkClass('/admin/users')} onClick={handleClose}>
+              <Users size={18} className="me-2" /> Kelola Guru
+            </Link>
+          </>
+        )}
+      </Nav>
+      <div className="mt-auto border-top border-secondary pt-3">
+        <div className="d-flex align-items-center mb-3 px-2">
+          <div className="bg-secondary rounded-circle p-2 me-2 d-flex align-items-center justify-content-center" style={{width: 40, height: 40}}>
+            <User size={20} />
+          </div>
+          <div style={{overflow: 'hidden'}}>
+            <div className="fw-bold text-truncate">{profile?.name || 'User'}</div>
+            <div className="small text-white-50 text-truncate" style={{fontSize: '0.75rem'}}>{profile?.nip || 'No NIP'}</div>
+          </div>
+        </div>
+        <button onClick={signOut} className="btn btn-outline-danger w-100 btn-sm">
+          <LogOut size={16} className="me-2" /> Logout
+        </button>
+      </div>
+  </div>
+);
 
 export default Layout;
