@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import { Table, Button, Modal, Form, Alert, Spinner, Badge } from 'react-bootstrap';
 import FileUpload from '../components/FileUpload';
+import { deleteFileFromUrl } from '../utils/storageUtils';
 import { Edit, Trash2, Plus, FileText, Eye } from 'lucide-react';
 import CertificationDetailModal from '../components/CertificationDetailModal';
 
@@ -128,10 +129,14 @@ const Certification = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (item) => {
     if (!window.confirm('Yakin ingin menghapus data ini?')) return;
 
-    const { error } = await supabase.from('certification').delete().eq('id', id);
+    if (item.cert_url) {
+      await deleteFileFromUrl(item.cert_url, 'documents');
+    }
+
+    const { error } = await supabase.from('certification').delete().eq('id', item.id);
     if (error) setError(error.message);
     else fetchSettingsAndData();
   };
@@ -194,7 +199,7 @@ const Certification = () => {
                 <Button variant="outline-primary" size="sm" className="me-2" onClick={() => handleEdit(item)} disabled={!canEdit} title="Edit">
                   <Edit size={16} />
                 </Button>
-                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item.id)} disabled={!canEdit} title="Hapus">
+                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item)} disabled={!canEdit} title="Hapus">
                   <Trash2 size={16} />
                 </Button>
               </td>

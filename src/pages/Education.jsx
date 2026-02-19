@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import { Table, Button, Modal, Form, Alert, Spinner, Badge } from 'react-bootstrap';
 import FileUpload from '../components/FileUpload';
+import { deleteFileFromUrl } from '../utils/storageUtils';
 import { Edit, Trash2, Plus, FileText } from 'lucide-react';
 
 const Education = () => {
@@ -97,13 +98,17 @@ const Education = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (item) => {
     if (!window.confirm('Yakin ingin menghapus data ini?')) return;
+
+    if (item.certificate_url) {
+      await deleteFileFromUrl(item.certificate_url, 'documents');
+    }
 
     const { error } = await supabase
       .from('education')
       .delete()
-      .eq('id', id);
+      .eq('id', item.id);
 
     if (error) setError(error.message);
     else fetchSettingsAndData();
@@ -151,7 +156,7 @@ const Education = () => {
                 <Button variant="outline-primary" size="sm" className="me-2" onClick={() => handleEdit(item)} disabled={!canEdit}>
                   <Edit size={16} />
                 </Button>
-                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item.id)} disabled={!canEdit}>
+                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item)} disabled={!canEdit}>
                   <Trash2 size={16} />
                 </Button>
               </td>

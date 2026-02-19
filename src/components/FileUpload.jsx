@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { Form, Button, ProgressBar, Alert } from 'react-bootstrap';
 import { FileText, Eye } from 'lucide-react';
 import DocumentPreviewModal from './DocumentPreviewModal';
+import { deleteFileFromUrl } from '../utils/storageUtils';
 
 const FileUpload = ({
   bucketName = 'documents',
@@ -51,18 +52,7 @@ const FileUpload = ({
 
       // Attempt to delete the old file if it exists
       if (currentUrl) {
-        try {
-          // Extract the path from the URL.
-          // URL format: .../storage/v1/object/public/<bucketName>/<path>
-          const urlParts = currentUrl.split(`/public/${bucketName}/`);
-          if (urlParts.length > 1) {
-            const oldPath = decodeURIComponent(urlParts[1]);
-            await supabase.storage.from(bucketName).remove([oldPath]);
-          }
-        } catch (delError) {
-          console.error("Failed to delete old file:", delError);
-          // Do not fail the upload process if deletion fails
-        }
+        await deleteFileFromUrl(currentUrl, bucketName);
       }
 
       onUpload(publicUrl);
