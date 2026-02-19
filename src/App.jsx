@@ -14,7 +14,6 @@ import Certification from './pages/Certification';
 import Family from './pages/Family';
 import Documents from './pages/Documents';
 import Dashboard from './pages/Dashboard';
-
 function App() {
   return (
     <Routes>
