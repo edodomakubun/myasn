@@ -13,6 +13,7 @@ import Salary from './pages/Salary';
 import Certification from './pages/Certification';
 import Family from './pages/Family';
 import Documents from './pages/Documents';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
-          <Route path="/" element={<Profile />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/education" element={<Education />} />
           <Route path="/rank" element={<Rank />} />
           <Route path="/salary" element={<Salary />} />

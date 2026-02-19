@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Navbar, Nav, Offcanvas, Button, Container } from 'react-bootstrap';
-import { User, BookOpen, Briefcase, DollarSign, Award, Users, FileText, LogOut, Settings, Menu } from 'lucide-react';
+import { User, BookOpen, Briefcase, DollarSign, Award, Users, FileText, LogOut, Settings, Menu, LayoutDashboard } from 'lucide-react';
 
 const Layout = () => {
   const { profile, signOut } = useAuth();
@@ -55,6 +55,9 @@ const SidebarContent = ({ linkClass, handleClose, profile, signOut }) => (
     <h4 className="mb-4 text-center fw-bold d-none d-lg-block text-white">MYASN Guru</h4>
     <Nav className="flex-column flex-grow-1 gap-2 mt-2 mt-lg-0">
       <Link to="/" className={linkClass('/')} onClick={handleClose}>
+          <LayoutDashboard size={18} className="me-2" /> Dashboard
+        </Link>
+      <Link to="/profile" className={linkClass('/profile')} onClick={handleClose}>
           <User size={18} className="me-2" /> Profil
         </Link>
         <Link to="/education" className={linkClass('/education')} onClick={handleClose}>
