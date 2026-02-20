@@ -1,95 +1,67 @@
-/* Professional Modern Design System */
+/* Modern Mobile-First Design System */
 :root {
-  /* Colors - Teal/Slate Theme */
-  --primary: #0F766E; /* Teal 700 */
-  --primary-hover: #115E59; /* Teal 800 */
-  --primary-light: #F0FDFA; /* Teal 50 */
+  /* Colors */
+  --primary: #0d6efd; /* Bootstrap Primary Default is good, but let's tweak to a fresh Blue */
+  --primary-hover: #0b5ed7;
+  --primary-light: #e7f1ff;
 
-  --secondary: #64748B; /* Slate 500 */
+  --secondary: #6c757d;
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #0dcaf0;
 
-  --success: #10B981; /* Emerald 500 */
-  --danger: #F43F5E; /* Rose 500 */
-  --warning: #F59E0B; /* Amber 500 */
-  --info: #0EA5E9; /* Sky 500 */
+  --dark: #212529;
+  --light: #f8f9fa;
+  --surface: #ffffff;
+  --bg-app: #f4f7f6; /* Very light cool grey */
 
-  --dark: #1E293B; /* Slate 800 */
-  --light: #F8FAFC; /* Slate 50 */
-  --border: #E2E8F0; /* Slate 200 */
-  --surface: #FFFFFF;
-  --bg-app: #F1F5F9; /* Slate 100 */
-
-  /* Sidebar Gradient */
-  --sidebar-bg: #134E4A; /* Teal 900 */
-  --sidebar-text: #CCFBF1; /* Teal 100 */
-  --sidebar-active: rgba(255, 255, 255, 0.1);
-
-  /* Text Colors */
-  --text-main: #334155; /* Slate 700 */
-  --text-secondary: #64748B; /* Slate 500 */
-  --text-muted: #94A3B8; /* Slate 400 */
-
-  /* Spacing - Airy */
+  /* Spacing */
   --space-xs: 0.25rem;
-  --space-sm: 0.75rem;
-  --space-md: 1.25rem;
-  --space-lg: 2rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
   --space-xl: 3rem;
 
-  /* Shadows - Soft & Diffused */
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-  --shadow-card: 0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04);
+  /* Shadows - Elevation */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 
   /* Radius */
-  --radius-sm: 0.25rem;
+  --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
 }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-app);
-  color: var(--text-main);
+  color: var(--dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  line-height: 1.5;
+  padding-bottom: env(safe-area-inset-bottom); /* iOS Safe Area */
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  color: var(--dark);
-  margin-bottom: var(--space-md);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary);
-  transition: color 0.2s;
-  font-weight: 500;
-}
-
-a:hover {
-  color: var(--primary-hover);
-}
-
-/* Custom Scrollbar */
+/* Custom Scrollbar for Desktop */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #ced4da;
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #adb5bd;
 }

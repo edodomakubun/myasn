@@ -1,43 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Navbar, Nav, Offcanvas, Button, Container, Dropdown } from 'react-bootstrap';
-import { User, BookOpen, Briefcase, DollarSign, Award, Users, FileText, LogOut, Settings, Menu, LayoutDashboard, ChevronDown } from 'lucide-react';
+import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
+import { User, BookOpen, Briefcase, DollarSign, Award, Users, FileText, LogOut, Settings, LayoutDashboard, ChevronDown } from 'lucide-react';
+import BottomNav from './BottomNav';
 
 const Layout = () => {
   const { profile, signOut } = useAuth();
   const location = useLocation();
-  const [showSidebar, setShowSidebar] = useState(false);
 
   const isActive = (path) => location.pathname === path;
   const linkClass = (path) => `nav-link ${isActive(path) ? 'active' : ''}`;
-
-  const handleClose = () => setShowSidebar(false);
-  const handleShow = () => setShowSidebar(true);
 
   return (
     <div className="d-flex app-container">
       {/* Desktop Sidebar (Hidden on Mobile) */}
       <div className="d-none d-lg-flex flex-column sidebar" style={{ width: '280px', flexShrink: 0 }}>
-        <SidebarContent linkClass={linkClass} handleClose={handleClose} profile={profile} />
+        <SidebarContent linkClass={linkClass} profile={profile} />
       </div>
-
-      {/* Mobile Offcanvas Sidebar */}
-      <Offcanvas show={showSidebar} onHide={handleClose} className="d-lg-none p-0 border-0" style={{ width: '280px' }}>
-        <Offcanvas.Body className="p-0">
-          <SidebarContent linkClass={linkClass} handleClose={handleClose} profile={profile} />
-        </Offcanvas.Body>
-      </Offcanvas>
 
       {/* Main Content Area */}
       <div className="flex-grow-1 d-flex flex-column h-100 w-100" style={{ overflowX: 'hidden' }}>
+        {/* Top Navbar */}
         <Navbar className="top-navbar px-3 px-lg-4">
             <Container fluid className="px-0">
                 <div className="d-flex align-items-center w-100 justify-content-between">
                     <div className="d-flex align-items-center">
-                        <Button variant="outline-secondary" className="d-lg-none me-3 border-0" onClick={handleShow}>
-                            <Menu size={24} />
-                        </Button>
+                        {/* No Toggle Button needed for Mobile anymore */}
                         <h5 className="m-0 fw-bold text-primary d-none d-md-block">Peremajaan Data Guru</h5>
                         <h5 className="m-0 fw-bold text-primary d-md-none">MyASN</h5>
                     </div>
@@ -74,15 +63,19 @@ const Layout = () => {
             </Container>
         </Navbar>
 
-        <div className="flex-grow-1 overflow-auto p-3 p-md-4">
+        {/* Content Wrapper - Added padding bottom for mobile nav */}
+        <div className="flex-grow-1 overflow-auto p-3 p-md-4 pb-5 pb-lg-4 mb-5 mb-lg-0">
            <Outlet />
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 };
 
-const SidebarContent = ({ linkClass, handleClose, profile }) => (
+const SidebarContent = ({ linkClass, profile }) => (
   <div className="d-flex flex-column h-100 sidebar">
     <div className="sidebar-header">
       <h4 className="m-0 fw-bold text-primary tracking-tight">MYASN <span className="fw-light text-secondary">GURU</span></h4>
@@ -91,28 +84,28 @@ const SidebarContent = ({ linkClass, handleClose, profile }) => (
     <div className="flex-grow-1 overflow-auto p-3">
         <div className="small fw-bold text-muted mb-3 px-2 text-uppercase" style={{fontSize: '0.75rem', letterSpacing: '0.05em'}}>Menu Utama</div>
         <Nav className="flex-column gap-1">
-            <Link to="/" className={linkClass('/')} onClick={handleClose}>
+            <Link to="/" className={linkClass('/')}>
                 <LayoutDashboard size={18} className="me-3" /> Dashboard
             </Link>
-            <Link to="/profile" className={linkClass('/profile')} onClick={handleClose}>
+            <Link to="/profile" className={linkClass('/profile')}>
                 <User size={18} className="me-3" /> Profil
             </Link>
-            <Link to="/education" className={linkClass('/education')} onClick={handleClose}>
+            <Link to="/education" className={linkClass('/education')}>
                 <BookOpen size={18} className="me-3" /> Pendidikan
             </Link>
-            <Link to="/rank" className={linkClass('/rank')} onClick={handleClose}>
+            <Link to="/rank" className={linkClass('/rank')}>
                 <Briefcase size={18} className="me-3" /> Pangkat
             </Link>
-            <Link to="/salary" className={linkClass('/salary')} onClick={handleClose}>
+            <Link to="/salary" className={linkClass('/salary')}>
                 <DollarSign size={18} className="me-3" /> Berkala Gaji
             </Link>
-            <Link to="/certification" className={linkClass('/certification')} onClick={handleClose}>
+            <Link to="/certification" className={linkClass('/certification')}>
                 <Award size={18} className="me-3" /> Sertifikasi
             </Link>
-            <Link to="/family" className={linkClass('/family')} onClick={handleClose}>
+            <Link to="/family" className={linkClass('/family')}>
                 <Users size={18} className="me-3" /> Keluarga
             </Link>
-            <Link to="/documents" className={linkClass('/documents')} onClick={handleClose}>
+            <Link to="/documents" className={linkClass('/documents')}>
                 <FileText size={18} className="me-3" /> Dokumen
             </Link>
         </Nav>
@@ -121,10 +114,10 @@ const SidebarContent = ({ linkClass, handleClose, profile }) => (
           <>
             <div className="small fw-bold text-muted mt-4 mb-3 px-2 text-uppercase" style={{fontSize: '0.75rem', letterSpacing: '0.05em'}}>Administrator</div>
             <Nav className="flex-column gap-1">
-                <Link to="/admin/settings" className={linkClass('/admin/settings')} onClick={handleClose}>
+                <Link to="/admin/settings" className={linkClass('/admin/settings')}>
                 <Settings size={18} className="me-3" /> Pengaturan
                 </Link>
-                <Link to="/admin/users" className={linkClass('/admin/users')} onClick={handleClose}>
+                <Link to="/admin/users" className={linkClass('/admin/users')}>
                 <Users size={18} className="me-3" /> Kelola Guru
                 </Link>
             </Nav>

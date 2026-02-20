@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
-import { Card, Button, Row, Col, Badge, Spinner, Alert } from 'react-bootstrap';
+import { Card, Button, Row, Col, Badge, Spinner, Alert, ProgressBar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
-  User, BookOpen, Briefcase, DollarSign, Award, Users, FileText, CheckCircle, XCircle
+  User, BookOpen, Briefcase, DollarSign, Award, Users, FileText,
+  CheckCircle, XCircle, ArrowRight, UploadCloud, Bell
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -38,98 +39,114 @@ const Dashboard = () => {
   };
 
   const modules = [
-    { key: 'profile_edit', title: 'Profil', icon: <User size={32} />, link: '/profile', desc: 'Data Diri & Kontak' },
-    { key: 'education_edit', title: 'Pendidikan', icon: <BookOpen size={32} />, link: '/education', desc: 'Riwayat Sekolah & Kuliah' },
-    { key: 'rank_edit', title: 'Pangkat', icon: <Briefcase size={32} />, link: '/rank', desc: 'Riwayat Golongan & Jabatan' },
-    { key: 'salary_edit', title: 'Gaji Berkala', icon: <DollarSign size={32} />, link: '/salary', desc: 'Riwayat Kenaikan Gaji' },
-    { key: 'certification_edit', title: 'Sertifikasi', icon: <Award size={32} />, link: '/certification', desc: 'Sertifikat Pendidik & Keahlian' },
-    { key: 'family_edit', title: 'Keluarga', icon: <Users size={32} />, link: '/family', desc: 'Data Suami/Istri & Anak' },
-    { key: 'appointment_edit', title: 'Dokumen', icon: <FileText size={32} />, link: '/documents', desc: 'SK Pengangkatan & Mengajar' },
+    { key: 'profile_edit', title: 'Profil', icon: <User size={24} />, link: '/profile', color: 'bg-primary' },
+    { key: 'education_edit', title: 'Pendidikan', icon: <BookOpen size={24} />, link: '/education', color: 'bg-success' },
+    { key: 'rank_edit', title: 'Pangkat', icon: <Briefcase size={24} />, link: '/rank', color: 'bg-warning' },
+    { key: 'salary_edit', title: 'Gaji', icon: <DollarSign size={24} />, link: '/salary', color: 'bg-danger' },
+    { key: 'certification_edit', title: 'Sertifikasi', icon: <Award size={24} />, link: '/certification', color: 'bg-info' },
+    { key: 'family_edit', title: 'Keluarga', icon: <Users size={24} />, link: '/family', color: 'bg-secondary' },
+    { key: 'appointment_edit', title: 'Dokumen', icon: <FileText size={24} />, link: '/documents', color: 'bg-dark' },
   ];
 
-  if (loading) return <div className="text-center p-5"><Spinner animation="border" /></div>;
+  if (loading) return <div className="d-flex justify-content-center align-items-center" style={{height: '60vh'}}><Spinner animation="border" variant="primary" /></div>;
+
+  const openModulesCount = modules.filter(m => getFeatureStatus(m.key).isOpen).length;
+  const progress = Math.round((openModulesCount / modules.length) * 100);
 
   return (
-    <div>
-      <div className="mb-4">
-        <h2 className="fw-bold text-primary">Selamat Datang, {profile?.name || 'Guru'}!</h2>
-        <p className="text-muted">
-          Selamat datang di Aplikasi Peremajaan Data Guru (MyASN Clone).
-          Silakan perbarui data Anda pada menu yang tersedia di bawah ini.
-        </p>
+    <div className="pb-5">
+      {/* Header Section */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 className="fw-bold text-dark mb-1">Halo, {profile?.name?.split(' ')[0] || 'Guru'}! 👋</h2>
+          <p className="text-muted small m-0">Selamat datang kembali di MyASN.</p>
+        </div>
+        <div className="position-relative">
+             <Bell size={24} className="text-muted" />
+             <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                <span className="visually-hidden">New alerts</span>
+             </span>
+        </div>
       </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert variant="danger" className="rounded-3 shadow-sm border-0">{error}</Alert>}
 
-      <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+      {/* Status Card */}
+      <Card className="border-0 shadow-sm mb-4 overflow-hidden" style={{ borderRadius: '1.5rem' }}>
+        <div className="p-4 text-white position-relative" style={{ background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)' }}>
+           <div className="position-absolute top-0 end-0 p-3 opacity-25">
+              <FileText size={120} />
+           </div>
+           <div className="position-relative z-1">
+              <h5 className="fw-bold mb-3">Status Peremajaan Data</h5>
+              <div className="d-flex align-items-end mb-2">
+                  <h1 className="display-4 fw-bold mb-0 lh-1 me-2">{openModulesCount}</h1>
+                  <span className="mb-1 opacity-75">/ {modules.length} Modul Dibuka</span>
+              </div>
+              <ProgressBar now={progress} variant="info" className="mb-3" style={{ height: '6px', backgroundColor: 'rgba(255,255,255,0.2)' }} />
+              <div className="d-flex align-items-center small opacity-75">
+                  <CheckCircle size={16} className="me-1" />
+                  <span>Silakan lengkapi data pada modul yang aktif.</span>
+              </div>
+           </div>
+        </div>
+      </Card>
+
+      {/* Quick Actions Title */}
+      <h5 className="fw-bold text-dark mb-3">Menu Utama</h5>
+
+      {/* Grid Layout for App Icons */}
+      <Row xs={2} sm={3} md={4} lg={5} className="g-3 mb-4">
         {modules.map((mod) => {
           const status = getFeatureStatus(mod.key);
           const isOpen = status.isOpen || profile?.role === 'admin';
 
           return (
             <Col key={mod.key}>
-              <Card className="h-100 shadow-sm border-0 hover-card">
-                <Card.Body className="d-flex flex-column">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div className="p-3 bg-light rounded-circle text-primary">
+              <Link to={mod.link} className="text-decoration-none">
+                <Card className={`h-100 border-0 shadow-sm text-center py-3 module-card ${!isOpen ? 'opacity-50' : ''}`} style={{ borderRadius: '1rem' }}>
+                  <Card.Body className="p-2 d-flex flex-column align-items-center justify-content-center">
+                    <div className={`p-3 rounded-circle mb-2 text-white shadow-sm d-flex align-items-center justify-content-center ${mod.color}`} style={{ width: '56px', height: '56px' }}>
                       {mod.icon}
                     </div>
-                    <Badge bg={isOpen ? "success" : "secondary"} pill>
-                      {isOpen ? "Dibuka" : "Ditutup"}
+                    <span className="fw-semibold text-dark small text-truncate w-100 px-1">{mod.title}</span>
+                    <Badge bg={isOpen ? "light" : "secondary"} text={isOpen ? "success" : "light"} className="mt-2 rounded-pill fw-normal" style={{ fontSize: '0.65rem' }}>
+                        {isOpen ? "Buka" : "Tutup"}
                     </Badge>
-                  </div>
-
-                  <Card.Title className="fw-bold">{mod.title}</Card.Title>
-                  <Card.Text className="text-muted small flex-grow-1">
-                    {mod.desc}
-                  </Card.Text>
-
-                  <div className="mt-3">
-                    <Button as={Link} to={mod.link} variant="outline-primary" className="w-100">
-                      Buka Menu
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
+                  </Card.Body>
+                </Card>
+              </Link>
             </Col>
           );
         })}
       </Row>
 
-      <div className="mt-5 p-4 bg-white rounded shadow-sm border">
-        <h5 className="mb-3 fw-bold">Informasi Status Peremajaan Data</h5>
-        <div className="table-responsive">
-          <table className="table table-borderless">
-            <thead>
-              <tr className="text-muted border-bottom">
-                <th>Modul Data</th>
-                <th>Status Edit</th>
-                <th>Keterangan</th>
-              </tr>
-            </thead>
-            <tbody>
-              {modules.map((mod) => {
-                 const status = getFeatureStatus(mod.key);
-                 return (
-                  <tr key={mod.key}>
-                    <td className="fw-medium">{mod.title}</td>
-                    <td>
-                      {status.isOpen ? (
-                        <span className="text-success"><CheckCircle size={16} className="me-1"/> Buka</span>
-                      ) : (
-                        <span className="text-secondary"><XCircle size={16} className="me-1"/> Tutup</span>
-                      )}
-                    </td>
-                    <td className="text-muted small">
-                      {status.isOpen ? "Anda dapat menambah, mengubah, atau menghapus data." : "Menu hanya dapat dilihat (Read-only)."}
-                    </td>
-                  </tr>
-                 );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Recent Activity / Info */}
+      <h5 className="fw-bold text-dark mb-3">Informasi Terkini</h5>
+      <Card className="border-0 shadow-sm mb-3" style={{ borderRadius: '1rem' }}>
+        <Card.Body className="p-0">
+            <div className="list-group list-group-flush rounded-3">
+                <div className="list-group-item border-0 p-3 d-flex align-items-start">
+                    <div className="bg-info bg-opacity-10 p-2 rounded-circle me-3 text-info">
+                        <UploadCloud size={20} />
+                    </div>
+                    <div>
+                        <h6 className="fw-bold mb-1">Periode Upload Dokumen</h6>
+                        <p className="text-muted small mb-0">Pastikan dokumen yang diupload dalam format PDF/JPG dengan ukuran maksimal 2MB.</p>
+                    </div>
+                </div>
+                <div className="list-group-item border-0 p-3 d-flex align-items-start border-top">
+                    <div className="bg-warning bg-opacity-10 p-2 rounded-circle me-3 text-warning">
+                        <User size={20} />
+                    </div>
+                    <div>
+                        <h6 className="fw-bold mb-1">Verifikasi Data</h6>
+                        <p className="text-muted small mb-0">Admin akan melakukan verifikasi data secara berkala. Cek status secara rutin.</p>
+                    </div>
+                </div>
+            </div>
+        </Card.Body>
+      </Card>
     </div>
   );
 };
