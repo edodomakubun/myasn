@@ -1,4 +1,4 @@
-/* Modern Clean App Styles */
+/* Professional Teal Design */
 
 /* Base Layout */
 .app-container {
@@ -6,116 +6,159 @@
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* Sidebar - Dark Teal */
 .sidebar {
-  background-color: var(--surface);
-  border-right: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(170deg, #115E59 0%, #042F2E 100%);
+  color: var(--sidebar-text);
+  box-shadow: var(--shadow-lg);
   z-index: 1040;
+  border-right: none;
 }
 
 .sidebar-header {
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: var(--space-md);
+}
+
+.sidebar h4 {
+  color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .nav-link {
-  color: var(--text-secondary) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
   font-weight: 500;
-  padding: 0.75rem 1rem !important;
-  border-radius: var(--radius-md) !important;
+  padding: 0.875rem 1.25rem !important;
+  border-radius: var(--radius-lg) !important;
   transition: all 0.2s ease-in-out;
   margin-bottom: 4px;
+  border: 1px solid transparent;
 }
 
 .nav-link:hover {
-  background-color: var(--bg-app);
-  color: var(--primary) !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff !important;
   transform: translateX(4px);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .nav-link.active {
-  background-color: rgba(37, 99, 235, 0.1) !important; /* Primary light opacity */
+  background-color: var(--primary-light) !important;
   color: var(--primary) !important;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
 }
 
-/* Top Navbar */
+.nav-link.active svg {
+  stroke-width: 2.5px;
+}
+
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: var(--space-md);
+  margin-top: auto;
+}
+
+/* Top Navbar - Clean White */
 .top-navbar {
-  background-color: var(--surface) !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
   border-bottom: 1px solid var(--border) !important;
-  height: 64px;
-  backdrop-filter: blur(8px);
+  height: 80px;
+  backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 1030;
+  padding: 0 var(--space-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .user-dropdown-toggle {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: var(--radius-md);
-  transition: background-color 0.2s;
+  gap: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.2s;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
+  background-color: white;
 }
 
 .user-dropdown-toggle:hover {
-  background-color: var(--bg-app);
+  background-color: var(--light);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Cards */
+/* Cards - Floating */
 .card {
   background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
   overflow: hidden;
+  position: relative;
+}
+
+/* Accent top border for cards */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--success) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card:hover {
-  /* Subtle lift for interactive cards */
-  /* box-shadow: var(--shadow-md);
-  transform: translateY(-2px); */
+  /* No translateY here, specific to hover-card class */
 }
 
 .hover-card:hover {
-  box-shadow: var(--shadow-md) !important;
-  transform: translateY(-4px) !important;
-  border-color: var(--primary-hover) !important;
+  box-shadow: var(--shadow-lg) !important;
+  transform: translateY(-5px) !important;
 }
 
 .card-header {
   background-color: transparent;
   border-bottom: 1px solid var(--border);
-  padding: 1.25rem 1.5rem;
-  font-weight: 600;
+  padding: 1.5rem;
+  font-weight: 700;
   color: var(--dark);
+  letter-spacing: -0.01em;
 }
 
 .card-body {
-  padding: 1.5rem;
+  padding: 1.75rem;
 }
 
-/* Buttons */
+/* Buttons - Rounded Pill */
 .btn {
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  padding: 0.625rem 1.25rem;
+  border-radius: 9999px; /* Pill shape */
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
   transition: all 0.2s;
   border: none;
+  letter-spacing: 0.01em;
   box-shadow: var(--shadow-sm);
 }
 
 .btn-primary {
   background-color: var(--primary);
   color: #ffffff;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
 }
 
 .btn-primary:hover {
@@ -125,84 +168,88 @@
 }
 
 .btn-secondary {
-  background-color: var(--surface);
+  background-color: white;
   color: var(--text-main);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-app);
+  background-color: var(--light);
   border-color: var(--text-muted);
   color: var(--dark);
 }
 
 .btn-outline-primary {
-  border: 1px solid var(--primary);
+  border: 2px solid var(--primary); /* Thicker border */
   color: var(--primary);
   background: transparent;
+  padding: 0.6rem 1.4rem; /* Adjust padding for border width */
 }
 
 .btn-outline-primary:hover {
   background-color: var(--primary);
   color: #fff;
+  border-color: var(--primary);
 }
 
 .btn-sm {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
 }
 
-/* Forms */
+/* Forms - Clean */
 .form-control, .form-select {
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 0.625rem 0.875rem;
+  border-radius: var(--radius-lg);
+  padding: 0.875rem 1rem;
   color: var(--text-main);
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #FAFAFA;
+  transition: all 0.2s;
+  font-size: 0.95rem;
 }
 
 .form-control:focus, .form-select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); /* Primary glow */
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1); /* Teal glow */
 }
 
 .form-label {
-  color: var(--text-secondary);
-  font-weight: 500;
-  font-size: 0.875rem;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
   margin-bottom: 0.5rem;
+  display: block;
 }
 
-/* Tables */
+/* Tables - Card Style */
 .table-responsive {
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
+  background: white;
+  border: 1px solid var(--border);
 }
 
 .table {
   width: 100%;
   margin-bottom: 0;
-  background-color: var(--surface);
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
 }
 
 .table thead th {
-  background-color: var(--bg-app);
+  background-color: #F8FAFC;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  padding: 1rem 1.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--border);
-  border-top: none;
 }
 
 .table tbody td {
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   vertical-align: middle;
   border-bottom: 1px solid var(--border);
   color: var(--text-main);
@@ -214,73 +261,71 @@
 }
 
 .table tbody tr:hover {
-  background-color: #F8FAFC; /* Very light slate hover */
+  background-color: var(--primary-light); /* Very light teal hover */
 }
 
-/* Badges */
+/* Badges - Modern */
 .badge {
-  padding: 0.35em 0.8em;
+  padding: 0.5em 1em;
   font-size: 0.75em;
-  font-weight: 600;
-  border-radius: 9999px; /* Pill shape */
-  letter-spacing: 0.025em;
+  font-weight: 700;
+  border-radius: 6px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .bg-success {
-  background-color: #D1FAE5 !important; /* Light green bg */
-  color: #065F46; /* Dark green text */
+  background-color: #D1FAE5 !important;
+  color: #064E3B; /* Darker green text */
+  border: 1px solid rgba(6, 78, 59, 0.1);
 }
 
 .bg-danger {
-  background-color: #FEE2E2 !important; /* Light red bg */
-  color: #991B1B; /* Dark red text */
-}
-
-.bg-warning {
-  background-color: #FEF3C7 !important;
-  color: #92400E;
+  background-color: #FFE4E6 !important; /* Rose 100 */
+  color: #881337; /* Rose 900 */
+  border: 1px solid rgba(136, 19, 55, 0.1);
 }
 
 .bg-info {
-  background-color: #DBEAFE !important;
-  color: #1E40AF;
+  background-color: #E0F2FE !important;
+  color: #0C4A6E;
+  border: 1px solid rgba(12, 74, 110, 0.1);
 }
 
 .bg-secondary {
-  background-color: #E2E8F0 !important;
+  background-color: #F1F5F9 !important;
   color: #475569;
+  border: 1px solid rgba(71, 85, 105, 0.1);
 }
 
 /* Modals */
 .modal-content {
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
+  overflow: hidden;
 }
 
 .modal-header {
   border-bottom: 1px solid var(--border);
-  background-color: var(--surface);
-  padding: 1.25rem 1.5rem;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
+  background-color: #fff;
+  padding: 1.5rem 2rem;
 }
 
 .modal-title {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--dark);
+  font-size: 1.25rem;
 }
 
 .modal-body {
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .modal-footer {
   border-top: 1px solid var(--border);
-  padding: 1.25rem 1.5rem;
-  background-color: var(--bg-app);
-  border-bottom-left-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  background-color: #F8FAFC;
 }
 
 /* Utilities */
@@ -290,4 +335,8 @@
 
 .shadow-sm {
   box-shadow: var(--shadow-sm) !important;
+}
+
+.text-primary {
+  color: var(--primary) !important;
 }

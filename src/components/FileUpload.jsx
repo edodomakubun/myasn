@@ -30,6 +30,7 @@ const FileUpload = ({
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
     if (!allowedTypes.includes(file.type)) {
        setError('Format file tidak didukung. Harap upload PDF atau JPG.');
+       return;
     }
 
     setError(null);
